@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Study buddy</title>
+<style>body{font-family:-apple-system,system-ui,sans-serif;background:#0b1a5e;color:#fff;margin:0;padding:16px;font-size:20px}.c{background:#fff;color:#0b1a5e;border-radius:16px;padding:16px;margin:12px 0}h1{font-size:28px;margin:8px 0}.big{font-size:44px;font-weight:700}.dot{display:inline-block;width:14px;height:14px;border-radius:7px;margin-right:6px}small{opacity:.75}</style></head>
+<body><h1 id="h">🤝 Study buddy</h1><div id="o"><div class="c">⏳ Loading…</div></div>
+<script>
+var SB=window.__SB||'https://ddneudbfizxsnpeywuve.supabase.co',PK='sb_publishable_OYluRp5nfmzO9C2TVC0yzw_wp4mx5Pu';
+var T=new URLSearchParams(location.search).get('t')||'';
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function ago(s){if(s<60)return 'just now';if(s<3600)return Math.floor(s/60)+' min ago';if(s<86400)return Math.floor(s/3600)+' hours ago';return Math.floor(s/86400)+' days ago';}
+function draw(r){var o=document.getElementById('o');
+ if(!r||!r.ok){document.getElementById('h').textContent='🤝 Study buddy';o.innerHTML='<div class="c">This link is turned off. Ask for a new study buddy link.</div>';return false;}
+ var s=r.snap||{},nm=esc(r.name||s.name||'Your buddy'),live=r.at&&r.seconds_ago<60;
+ document.getElementById('h').innerHTML='🤝 '+nm+' today';
+ var h='<div class="c"><span class="dot" style="background:'+(live?'#1db954':'#999')+'"></span><b>'+(live?'Studying right now':(r.at?'Last seen '+ago(r.seconds_ago):'Not studied yet'))+'</b>'+(live&&s.screen?'<br><small>On: '+esc(s.screen)+'</small>':'')+'</div>';
+ h+='<div class="c">New cards today<div class="big">'+(s.today||0)+' / '+(s.goal||0)+'</div>✅ '+(s.todayR||0)+' right &nbsp; ❌ '+(s.todayW||0)+' wrong<br>⏱ '+(s.min||0)+' minutes today</div>';
+ if(s.ch)h+='<div class="c">🗺 Working on<br><b>Chapter '+esc(s.ch)+': '+esc(s.chTitle||'')+'</b></div>';
+ if(s.rank)h+='<div class="c">🎖 Rank: <b>'+esc(s.rank)+'</b></div>';
+ if(s.rec&&s.rec.length)h+='<div class="c"><b>Last cards</b><br>'+s.rec.map(function(x){return (x[1]?'✅':'❌')+' #'+(+x[0]);}).join(' · ')+'</div>';
+ o.innerHTML=h+'<p><small>Updates by itself every 10 seconds. Read-only.</small></p>';return true;}
+function tick(){fetch(SB+'/rest/v1/rpc/buddy_view',{method:'POST',headers:{apikey:PK,Authorization:'Bearer '+PK,'Content-Type':'application/json'},body:JSON.stringify({p_buddy:T})})
+ .then(function(r){return r.json();}).then(function(r){if(draw(r)!==false)setTimeout(tick,10000);}).catch(function(){setTimeout(tick,15000);});}
+if(!/^[0-9a-f]{48}$/.test(T))draw(null);else tick();
+</script></body></html>
