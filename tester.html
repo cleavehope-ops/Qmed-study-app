@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Naya QMED tester pass</title>
+<style>body{font-family:-apple-system,system-ui,sans-serif;background:#0b1a5e;color:#fff;margin:0;padding:24px;font-size:21px;text-align:center}.c{background:#fff;color:#0b1a5e;border-radius:16px;padding:20px;margin:16px auto;max-width:520px}</style></head>
+<body><h1>⚓ Naya QMED</h1><div class="c" id="o">⏳ Checking your tester pass…</div>
+<script>
+var SB=window.__SB||'https://ddneudbfizxsnpeywuve.supabase.co',PK='sb_publishable_OYluRp5nfmzO9C2TVC0yzw_wp4mx5Pu';
+var p=new URLSearchParams(location.search).get('p')||'';
+function ctry(){var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}var r=((navigator.language||'').split('-')[1]||'').toUpperCase(),n=r;try{if(r&&Intl.DisplayNames)n=new Intl.DisplayNames(['en'],{type:'region'}).of(r);}catch(e){}return (n||'Unknown')+(tz?' · '+tz:'');}
+function say(t){document.getElementById('o').innerHTML=t;}
+if(!/^[0-9a-f]{36}$/.test(p))say('This tester link is not complete. Ask for a new one.');
+else fetch(SB+'/rest/v1/rpc/pass_check',{method:'POST',headers:{apikey:PK,Authorization:'Bearer '+PK,'Content-Type':'application/json'},body:JSON.stringify({p_pass:p,p_country:ctry()})})
+ .then(function(r){return r.json();}).then(function(r){
+  if(!r||!r.ok){say(r&&r.why==='expired'?'⏰ This tester pass has ended. Thank you for testing!':'This tester pass is not active. Ask for a new one.');return;}
+  localStorage.setItem('qmed_tester',JSON.stringify({pass:p,exp:r.expires_at,kind:r.kind}));
+  var d=new Date(r.expires_at);say('✅ Pass OK ('+r.kind+'). It works until <b>'+d.toLocaleString()+'</b>.<br><br>Opening the app…');
+  setTimeout(function(){location.replace('./#staticrypt_pwd='+r.h);},900);
+ }).catch(function(){say('No internet. Please try again.');});
+</script></body></html>
