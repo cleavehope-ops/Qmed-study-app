@@ -1,6 +1,6 @@
 {
- "name": "Naya QMED",
- "short_name": "Naya QMED",
+ "name": "QMED Mate",
+ "short_name": "QMED Mate",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
